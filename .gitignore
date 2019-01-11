@@ -1,0 +1,16 @@
+# Build output directies
+/target
+*/target
+/build
+*/build
+
+# IntelliJ specific files/directories
+out
+.idea
+*.ipr
+*.iws
+*.iml
+
+# Gradle Files
+.gradle
+.m2
