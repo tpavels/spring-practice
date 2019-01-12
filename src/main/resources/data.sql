@@ -40,12 +40,12 @@ FROM  (
 LEFT JOIN unit_category c on c.name = cat;
 
 INSERT INTO civilization
-    (name, leader)
+    (name, leader, gold)
 VALUES
-    ('American','Teddy Roosevelt'),
-    ('Egyptian','Cleopatra'),
-    ('English','Victoria'),
-    ('Indian','Gandhi');
+    ('American','Teddy Roosevelt', 123 ),
+    ('Egyptian','Cleopatra', 222),
+    ('English','Victoria', 455),
+    ('Indian','Gandhi',600);
 
 INSERT INTO city
     (name, is_capital)
@@ -83,6 +83,30 @@ FROM  (
 LEFT JOIN civilization civ on civ.name = civ_name
 LEFT JOIN city c on c.name = city_name;
 
+INSERT INTO civilization_units (civilization_id , units_id)
+SELECT civ.id, u.id
+FROM  (
+   VALUES
+        ('American', 'Warrior'),
+        ('American','Warrior'),
+        ('American','Scout'),
+        ('American','Archer'),
+        ('Egyptian','Galley'),
+        ('Egyptian','Archer'),
+        ('Egyptian','Archer'),
+        ('English','Trader'),
+        ('English','Trader'),
+        ('English','Slinger'),
+        ('English','Spearman'),
+        ('English','Spearman'),
+        ('Indian','Warrior'),
+        ('Indian','Battering Ram'),
+        ('Indian','Builder'),
+        ('Indian','Settler')
+   ) val (civ_name, unit_name)
+LEFT JOIN civilization civ on civ.name = civ_name
+LEFT JOIN unit u on u.name = unit_name;
+
 INSERT INTO city_buildings (city_id, buildings_id)
 SELECT c.id, b.id
 FROM  (
@@ -117,5 +141,7 @@ FROM  (
    ) val (city_name, building_name)
 LEFT JOIN city c on c.name = city_name
 LEFT JOIN building b on b.name = building_name;
+
+
 
 

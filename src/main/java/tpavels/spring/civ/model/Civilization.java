@@ -14,8 +14,10 @@ public class Civilization {
     private Long id;
     private String name;
     private String leader;
+    private Long gold;
+
     @OneToMany
     private List<City> cities;
-    @OneToMany
+    @ManyToMany
     private List<Unit> units;
 }

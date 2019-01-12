@@ -7,5 +7,4 @@ import tpavels.spring.civ.model.Unit;
 import java.util.List;
 
 public interface UnitRepository extends CrudRepository<Unit, Long> {
-    Unit findByName(String name);
 }
