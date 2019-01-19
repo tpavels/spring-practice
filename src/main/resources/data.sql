@@ -47,21 +47,37 @@ VALUES
     ('English','Victoria', 455),
     ('Indian','Gandhi',600);
 
-INSERT INTO city
-    (name, is_capital)
+
+INSERT INTO location (id, x, y)
 VALUES
-    ('Washington',true),
-    ('New York',false),
-    ('Philadelphia',false),
-    ('Boston',false),
-    ('Alexandria',true),
-    ('Thebes',false),
-    ('Memphis',false),
-    ('London',true),
-    ('Liverpool',false),
-    ('Manchester',false),
-    ('Delhi',true),
-    ('Mumbai',false);
+    (1, 4,4),
+    (2, 4,11),
+    (3, 12,7),
+    (4, 16,1),
+    (5, 27,2),
+    (6, 29,8),
+    (7, 35,4),
+    (8, 32,15),
+    (9, 36,20),
+    (10, 10,16),
+    (11, 7,25),
+    (12, 18,20);
+
+INSERT INTO city
+    (name, is_capital, location_id)
+VALUES
+    ('Washington',true, 1),
+    ('New York',false, 2),
+    ('Philadelphia',false, 3),
+    ('Boston',false, 4),
+    ('Alexandria',true, 5),
+    ('Thebes',false, 6),
+    ('Memphis',false, 7),
+    ('London',true, 10),
+    ('Liverpool',false, 11),
+    ('Manchester',false, 12),
+    ('Delhi',true, 8),
+    ('Mumbai',false, 9);
 
 INSERT INTO civilization_cities (civilization_id , cities_id)
 SELECT civ.id, c.id
@@ -83,27 +99,27 @@ FROM  (
 LEFT JOIN civilization civ on civ.name = civ_name
 LEFT JOIN city c on c.name = city_name;
 
-INSERT INTO civilization_units (civilization_id , units_id)
-SELECT civ.id, u.id
+INSERT INTO CIV_UNITS (civilization_id , unit_id, location_id, rank, health)
+SELECT civ.id, u.id, l, h, r
 FROM  (
    VALUES
-        ('American', 'Warrior'),
-        ('American','Warrior'),
-        ('American','Scout'),
-        ('American','Archer'),
-        ('Egyptian','Galley'),
-        ('Egyptian','Archer'),
-        ('Egyptian','Archer'),
-        ('English','Trader'),
-        ('English','Trader'),
-        ('English','Slinger'),
-        ('English','Spearman'),
-        ('English','Spearman'),
-        ('Indian','Warrior'),
-        ('Indian','Battering Ram'),
-        ('Indian','Builder'),
-        ('Indian','Settler')
-   ) val (civ_name, unit_name)
+        ('American', 'Warrior', 1, 100, 1),
+        ('American','Warrior', 1, 100, 2),
+        ('American','Scout', 3, 100, 2),
+        ('American','Archer', 3, 100, 3),
+        ('Egyptian','Galley', 5, 100, 1),
+        ('Egyptian','Archer', 5, 100, 1),
+        ('Egyptian','Archer', 7, 100, 1),
+        ('English','Trader', 10, null, null),
+        ('English','Trader', 12, null, null),
+        ('English','Slinger', 12, 100, 2),
+        ('English','Spearman', 12, 100, 3),
+        ('English','Spearman', 12, 100, 1),
+        ('Indian','Warrior', 9, 100, 1),
+        ('Indian','Battering Ram', 9, 100, 2),
+        ('Indian','Builder', 8, null, null),
+        ('Indian','Settler', 8, null, null)
+   ) val (civ_name, unit_name, l, h, r)
 LEFT JOIN civilization civ on civ.name = civ_name
 LEFT JOIN unit u on u.name = unit_name;
 

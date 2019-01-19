@@ -18,6 +18,7 @@ public class Civilization {
 
     @OneToMany
     private List<City> cities;
-    @ManyToMany
-    private List<Unit> units;
+    @OneToMany
+    @JoinColumn(name = "civilization_id", insertable = false, updatable = false)
+    private List<CivUnits> units;
 }

@@ -6,14 +6,11 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class Unit  {
+public class Location {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private Integer maintenanceCost;
-    @ManyToOne
-    private UnitCategory category;
-
+    private Long x;
+    private Long y;
 }
