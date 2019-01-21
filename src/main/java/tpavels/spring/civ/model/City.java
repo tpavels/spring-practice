@@ -1,17 +1,23 @@
 package tpavels.spring.civ.model;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import java.util.List;
 
-@Data
 @Entity
-public class City {
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+public class City extends BaseModel {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    @Transient
+    private Long cityId;
     private String name;
     private Boolean isCapital;
     @OneToOne

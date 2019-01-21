@@ -1,17 +1,20 @@
 package tpavels.spring.civ.model;
 
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
-@Data
 @Entity
-public class CivUnits {
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+public class CivUnits extends BaseModel {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
     @ManyToOne
     private Unit unit;
     @OneToOne

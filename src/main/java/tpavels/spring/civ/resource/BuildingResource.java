@@ -41,8 +41,9 @@ public class BuildingResource {
     }
 
     @PutMapping
-    public ResponseEntity<Building> updateBuildings(@RequestBody Building b) {
-        Building updated = buildingService.updateBuilding(b);
-        return new ResponseEntity<>(updated, HttpStatus.OK);
+    public ResponseEntity<Building> updateBuildings(@RequestBody Building updated) {
+        Building existing = buildingService.getBuilding(updated.getBuildingId());
+        Building b = buildingService.updateBuilding(existing, updated);
+        return new ResponseEntity<>(b, HttpStatus.OK);
     }
 }

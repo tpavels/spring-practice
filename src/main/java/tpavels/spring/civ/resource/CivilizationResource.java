@@ -41,8 +41,9 @@ public class CivilizationResource {
     }
 
     @PutMapping
-    public ResponseEntity<Civilization> updateCivilizations(@RequestBody Civilization civ) {
-        Civilization updated = civilizationService.updateCivilization(civ);
-        return new ResponseEntity<>(updated, HttpStatus.OK);
+    public ResponseEntity<Civilization> updateCities(@RequestBody Civilization updated) {
+        Civilization existing = civilizationService.getCivilization(updated.getCivilizationId());
+        Civilization c = civilizationService.updateCivilization(existing, updated);
+        return new ResponseEntity<>(c, HttpStatus.OK);
     }
 }

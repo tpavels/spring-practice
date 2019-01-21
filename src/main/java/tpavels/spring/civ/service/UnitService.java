@@ -1,10 +1,12 @@
 package tpavels.spring.civ.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import tpavels.spring.civ.model.Unit;
 import tpavels.spring.civ.repository.UnitRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,31 +17,32 @@ public class UnitService {
     private UnitRepository unitRepository;
 
     public Long createUnit(Unit unit) {
-        if (unit == null) {
-            unit = new Unit();
-        }
         unit = unitRepository.save(unit);
         return unit.getId();
     }
     
     public void deleteUnit(Long id) {
-        boolean exist = unitRepository.findById(id).isPresent();
-        if (exist) {
+        try {
             unitRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFoundException(String.format("Unit {%s} does not exist",id));
         }
     }
 
-    public Unit updateUnit(Unit unit){
-        boolean exist = unitRepository.findById(unit.getId()).isPresent();
-        Unit updated = null;
-        if (exist) {
-            updated = unitRepository.save(unit);
-        }
+    public Unit updateUnit(Unit existing, Unit updated){
+        updated.setId(existing.getId());
+        updated = unitRepository.save(updated);
         return updated;
     }
 
     public Unit getUnit(Long id) {
-        return unitRepository.findById(id).orElse(null);
+        Unit unit = unitRepository.findById(id).orElse(null);
+        if (unit != null) {
+            unit.setUnitId(unit.getId());
+        } else {
+            throw new EntityNotFoundException(String.format("Unit {%s} does not exist",id));
+        }
+        return unit;
     }
 
     public List<Unit> fetchAllUnits(){

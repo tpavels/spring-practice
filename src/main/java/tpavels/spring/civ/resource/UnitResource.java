@@ -41,8 +41,9 @@ public class UnitResource {
     }
 
     @PutMapping
-    public ResponseEntity<Unit> updateUnits(@RequestBody Unit unit) {
-        Unit updated = unitService.updateUnit(unit);
-        return new ResponseEntity<>(updated, HttpStatus.OK);
+    public ResponseEntity<Unit> updateCities(@RequestBody Unit updated) {
+        Unit existing = unitService.getUnit(updated.getUnitId());
+        Unit u = unitService.updateUnit(existing, updated);
+        return new ResponseEntity<>(u, HttpStatus.OK);
     }
 }

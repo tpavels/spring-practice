@@ -1,10 +1,12 @@
 package tpavels.spring.civ.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import tpavels.spring.civ.model.Civilization;
 import tpavels.spring.civ.repository.CivilizationRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,31 +17,32 @@ public class CivilizationService {
     private CivilizationRepository civilizationRepository;
 
     public Long createCivilization(Civilization civ) {
-        if (civ == null) {
-            civ = new Civilization();
-        }
         civ = civilizationRepository.save(civ);
         return civ.getId();
     }
 
     public void deleteCivilization(Long id) {
-        boolean exist = civilizationRepository.findById(id).isPresent();
-        if (exist) {
+        try {
             civilizationRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFoundException(String.format("Civilization {%s} does not exist",id));
         }
     }
 
-    public Civilization updateCivilization(Civilization civ){
-        boolean exist = civilizationRepository.findById(civ.getId()).isPresent();
-        Civilization updated = null;
-        if (exist) {
-            updated = civilizationRepository.save(civ);
-        }
+    public Civilization updateCivilization(Civilization existing, Civilization updated){
+        updated.setId(existing.getId());
+        updated = civilizationRepository.save(updated);
         return updated;
     }
 
     public Civilization getCivilization(Long id) {
-        return civilizationRepository.findById(id).orElse(null);
+        Civilization civ = civilizationRepository.findById(id).orElse(null);
+        if (civ != null) {
+            civ.setCivilizationId(civ.getId());
+        } else {
+            throw new EntityNotFoundException(String.format("Civilization {%s} does not exist",id));
+        }
+        return civ;
     }
 
     public List<Civilization> fetchAllCivilizations(){

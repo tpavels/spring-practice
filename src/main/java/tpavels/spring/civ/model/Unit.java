@@ -1,19 +1,25 @@
 package tpavels.spring.civ.model;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
-@Data
 @Entity
-public class Unit  {
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+public class Unit extends BaseModel {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    @Transient
+    private Long unitId;
     private String name;
     private Integer maintenanceCost;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private UnitCategory category;
 
 }

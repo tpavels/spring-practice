@@ -1,17 +1,23 @@
 package tpavels.spring.civ.model;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import java.util.List;
 
-@Data
 @Entity
-public class Civilization {
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+public class Civilization extends BaseModel {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    @Transient
+    private Long civilizationId;
     private String name;
     private String leader;
     private Long gold;
