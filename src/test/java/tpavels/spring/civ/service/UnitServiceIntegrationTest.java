@@ -4,36 +4,38 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import tpavels.spring.civ.model.Unit;
 import tpavels.spring.civ.model.UnitCategory;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-integrationtest.properties")
 public class UnitServiceIntegrationTest {
 
     @Autowired
     private UnitService unitService;
 
     @Test(expected = EntityNotFoundException.class)
-    public void text_getUnit_notExist() {
+    public void test_getUnit_notExist() {
         unitService.getUnit(99999L);
     }
 
     @Test
+    public void test_getUnit_real() {
+        Unit unit = unitService.getUnit("Warrior");
+        assertEquals("Warrior", unit.getName());
+        assertEquals("Melee", unit.getCategory().getName());
+    }
+
+    @Test(expected = ConstraintViolationException.class)
     public void test_createUnit_empty() {
         Long unit = unitService.createUnit(new Unit());
-        Unit created = unitService.getUnit(unit);
-        assertNull(created.getName());
-        assertNull(created.getMaintenanceCost());
-        assertEquals(unit, created.getUnitId());
+        unitService.getUnit(unit);
     }
 
     @Test
@@ -60,8 +62,7 @@ public class UnitServiceIntegrationTest {
     }
 
     private Unit createTestUnit() {
-        UnitCategory unitCategory = new UnitCategory();
-        unitCategory.setName("testCat");
+        UnitCategory unitCategory = new UnitCategory("testCat");
 
         Unit unit = new Unit();
         unit.setName("testUnit");

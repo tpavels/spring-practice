@@ -45,6 +45,11 @@ public class CityService {
         return city;
     }
 
+    public City getCity(String name) {
+        City byName = cityRepository.getByName(name);
+        return byName;
+    }
+
     public List<City> fetchAllCities(){
         List<City> allCities = new ArrayList<>();
         cityRepository.findAll().forEach(allCities::add);

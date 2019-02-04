@@ -3,6 +3,7 @@ package tpavels.spring.civ.service;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import tpavels.spring.civ.model.City;
 import tpavels.spring.civ.model.Civilization;
 import tpavels.spring.civ.repository.CivilizationRepository;
 
@@ -43,6 +44,11 @@ public class CivilizationService {
             throw new EntityNotFoundException(String.format("Civilization {%s} does not exist",id));
         }
         return civ;
+    }
+
+    public Civilization getCivilization(String name) {
+        Civilization byName = civilizationRepository.getByName(name);
+        return byName;
     }
 
     public List<Civilization> fetchAllCivilizations(){

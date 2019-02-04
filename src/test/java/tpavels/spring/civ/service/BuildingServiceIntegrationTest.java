@@ -4,19 +4,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import tpavels.spring.civ.model.Building;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-integrationtest.properties")
 public class BuildingServiceIntegrationTest {
 
     @Autowired
@@ -28,12 +26,15 @@ public class BuildingServiceIntegrationTest {
     }
 
     @Test
-    public void test_createBuildin_empty() {
+    public void text_getBuilding() {
+        Building building = buildingService.getBuilding(1L);
+        assertEquals("Barracks", building.getName());
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void test_createBuilding_constraint() {
         Long building = buildingService.createBuilding(new Building());
-        Building created = buildingService.getBuilding(building);
-        assertNull(created.getName());
-        assertNull(created.getMaintenanceCost());
-        assertEquals(building, created.getBuildingId());
+        buildingService.getBuilding(building);
     }
 
     @Test

@@ -5,4 +5,6 @@ import tpavels.spring.civ.model.City;
 import tpavels.spring.civ.model.Civilization;
 
 public interface CityRepository extends CrudRepository<City, Long> {
+
+    City getByName(String name);
 }

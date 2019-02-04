@@ -3,6 +3,7 @@ package tpavels.spring.civ.service;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import tpavels.spring.civ.model.City;
 import tpavels.spring.civ.model.Unit;
 import tpavels.spring.civ.repository.UnitRepository;
 
@@ -43,6 +44,11 @@ public class UnitService {
             throw new EntityNotFoundException(String.format("Unit {%s} does not exist",id));
         }
         return unit;
+    }
+
+    public Unit getUnit(String name) {
+        Unit byName = unitRepository.getByName(name);
+        return byName;
     }
 
     public List<Unit> fetchAllUnits(){
