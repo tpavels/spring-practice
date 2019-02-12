@@ -18,20 +18,20 @@ public class CityResource {
 
     @GetMapping
     public ResponseEntity<List<City>> fetchAllCities() {
-        List<City> Cities = cityService.fetchAllCities();
-        return new ResponseEntity<>(Cities, HttpStatus.OK);
+        List<City> cities = cityService.fetchAllCities();
+        return new ResponseEntity<>(cities, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<City> getCities(@PathVariable Long id) {
-        City City = cityService.getCity(id);
-        return new ResponseEntity<>(City, HttpStatus.OK);
+        City city = cityService.getCity(id);
+        return new ResponseEntity<>(city, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Long> createCities(@RequestBody City c) {
-        Long CityId = cityService.createCity(c);
-        return new ResponseEntity<>(CityId, HttpStatus.OK);
+        Long cityId = cityService.createCity(c);
+        return new ResponseEntity<>(cityId, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
