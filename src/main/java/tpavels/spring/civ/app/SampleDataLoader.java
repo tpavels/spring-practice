@@ -1,7 +1,6 @@
 package tpavels.spring.civ.app;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -10,14 +9,15 @@ import tpavels.spring.civ.repository.BuildingRepository;
 import tpavels.spring.civ.repository.CityRepository;
 import tpavels.spring.civ.repository.CivilizationRepository;
 import tpavels.spring.civ.repository.UnitRepository;
-import tpavels.spring.civ.resource.UnitResource;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
+@Transactional
 public class SampleDataLoader implements ApplicationRunner {
 
     private BuildingRepository buildingRepository;
@@ -119,13 +119,13 @@ public class SampleDataLoader implements ApplicationRunner {
     }
 
     private void saveCiv(String name, String leader, Long gold, List<City> cities, List<CivUnits> units) {
-        civilizationRepository.save(Civilization.builder()
-                .name(name)
-                .leader(leader)
-                .cities(cities)
-                .gold(gold)
-                .units(units)
-                .build());
+        Civilization civilization = new Civilization();
+        civilization.setGold(gold);
+        civilization.setLeader(leader);
+        civilization.setName(name);
+        civilization.getCities().addAll(cities);
+        civilization.getUnits().addAll(units);
+        civilizationRepository.save(civilization);
     }
 
     private void saveBuilding(String name, Integer maintCost, Boolean isWorldWonder) {

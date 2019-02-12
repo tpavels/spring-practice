@@ -9,6 +9,7 @@ import tpavels.spring.civ.model.City;
 import tpavels.spring.civ.model.Location;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 
 import static org.junit.Assert.assertEquals;
@@ -39,6 +40,7 @@ public class CityServiceIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void test_createCity_data() {
         City testCity = createTestCity();
         Long city = cityService.createCity(testCity);

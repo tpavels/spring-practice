@@ -5,11 +5,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import tpavels.spring.civ.model.City;
-import tpavels.spring.civ.model.Civilization;
-import tpavels.spring.civ.model.Location;
+import tpavels.spring.civ.model.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.util.Arrays;
 
@@ -21,6 +20,12 @@ public class CivilizationServiceIntegrationTest {
 
     @Autowired
     private CivilizationService civilizationService;
+
+    @Autowired
+    private CityService cityService;
+
+    @Autowired
+    private UnitService unitService;
 
     @Test(expected = EntityNotFoundException.class)
     public void test_getCiv_notExist() {
@@ -40,6 +45,7 @@ public class CivilizationServiceIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void test_createCiv_data() {
         Civilization civ = createTestCiv();
         Long newCivId = civilizationService.createCivilization(civ);
@@ -51,15 +57,25 @@ public class CivilizationServiceIntegrationTest {
     }
 
     private Civilization createTestCiv() {
-        return Civilization.builder()
-                .name("testCiv")
-                .leader("testLeader")
-                .gold(123L)
-                .cities(Arrays.asList(City.builder()
-                        .name("testCity")
-                        .location(new Location(77L,77L))
+        Civilization civilization = new Civilization();
+        civilization.setName("testCiv");
+        civilization.setLeader("testLeader");
+        civilization.setGold(123L);
+        civilization.getCities().add(City.builder()
+                .name("testCity")
+                .location(new Location(77L,77L))
+                .isCapital(false)
+                .build());
+        civilization.getUnits().add(CivUnits.builder()
+                .unit(Unit.builder()
+                        .name("testUnit")
+                        .maintenanceCost(11)
+                        .category(new UnitCategory("testCat"))
                         .build())
-                ).build();
+                .health(99L)
+                .rank(2L)
+                .build());
+        return civilization;
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -72,6 +88,15 @@ public class CivilizationServiceIntegrationTest {
         Civilization civ = createTestCiv();
         Long newCivId = civilizationService.createCivilization(civ);
         civilizationService.deleteCivilization(newCivId);
+        cityService.getCity("testCity");
+    }
+
+    @Test
+    public void test_deleteUnit() {
+        Civilization civ = createTestCiv();
+        civilizationService.createCivilization(civ);
+        civ.getUnits().clear();
+        unitService.getUnit("testUnit");
     }
 
 }

@@ -21,14 +21,22 @@ public class City extends BaseModel {
 
     @Transient
     private Long cityId;
+
     @NotNull(message = "Name cannot be null")
     private String name;
+
     @NotNull(message = "Is Capital cannot be null")
     private Boolean isCapital;
+
     @OneToOne(cascade = CascadeType.PERSIST)
     @NotNull(message = "Location cannot be null")
     private Location location;
+
     @ManyToMany
     private List<Building> buildings;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "civilization_id")
+    private Civilization civilization;
 
 }
