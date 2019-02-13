@@ -18,6 +18,7 @@ public class CivilizationService {
     private CivilizationRepository civilizationRepository;
 
     public Long createCivilization(Civilization civ) {
+        civ.setId(null);
         civ = civilizationRepository.save(civ);
         return civ.getId();
     }
@@ -37,13 +38,9 @@ public class CivilizationService {
     }
 
     public Civilization getCivilization(Long id) {
-        Civilization civ = civilizationRepository.findById(id).orElse(null);
-        if (civ != null) {
-            civ.setCivilizationId(civ.getId());
-        } else {
-            throw new EntityNotFoundException(String.format("Civilization {%s} does not exist",id));
-        }
-        return civ;
+        return civilizationRepository
+                .findById(id)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     public Civilization getCivilization(String name) {

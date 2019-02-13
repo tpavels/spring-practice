@@ -42,7 +42,7 @@ public class CityResource {
 
     @PutMapping
     public ResponseEntity<City> updateCities(@RequestBody City updated) {
-        City existing = cityService.getCity(updated.getCityId());
+        City existing = cityService.getCity(updated.getId());
         City c = cityService.updateCity(existing, updated);
         return new ResponseEntity<>(c, HttpStatus.OK);
     }

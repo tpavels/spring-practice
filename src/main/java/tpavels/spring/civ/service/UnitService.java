@@ -18,6 +18,7 @@ public class UnitService {
     private UnitRepository unitRepository;
 
     public Long createUnit(Unit unit) {
+        unit.setId(null);
         unit = unitRepository.save(unit);
         return unit.getId();
     }
@@ -37,13 +38,9 @@ public class UnitService {
     }
 
     public Unit getUnit(Long id) {
-        Unit unit = unitRepository.findById(id).orElse(null);
-        if (unit != null) {
-            unit.setUnitId(unit.getId());
-        } else {
-            throw new EntityNotFoundException(String.format("Unit {%s} does not exist",id));
-        }
-        return unit;
+        return unitRepository
+                .findById(id)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     public Unit getUnit(String name) {

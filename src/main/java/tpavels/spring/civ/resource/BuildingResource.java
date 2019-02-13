@@ -42,7 +42,7 @@ public class BuildingResource {
 
     @PutMapping
     public ResponseEntity<Building> updateBuildings(@RequestBody Building updated) {
-        Building existing = buildingService.getBuilding(updated.getBuildingId());
+        Building existing = buildingService.getBuilding(updated.getId());
         Building b = buildingService.updateBuilding(existing, updated);
         return new ResponseEntity<>(b, HttpStatus.OK);
     }

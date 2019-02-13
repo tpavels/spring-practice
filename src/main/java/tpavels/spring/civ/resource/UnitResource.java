@@ -42,7 +42,7 @@ public class UnitResource {
 
     @PutMapping
     public ResponseEntity<Unit> updateCities(@RequestBody Unit updated) {
-        Unit existing = unitService.getUnit(updated.getUnitId());
+        Unit existing = unitService.getUnit(updated.getId());
         Unit u = unitService.updateUnit(existing, updated);
         return new ResponseEntity<>(u, HttpStatus.OK);
     }

@@ -44,7 +44,7 @@ public class BuildingServiceIntegrationTest {
         Building created = buildingService.getBuilding(building);
         assertEquals(testBuilding.getName(),created.getName());
         assertEquals(testBuilding.getMaintenanceCost(), created.getMaintenanceCost());
-        assertEquals(building, created.getBuildingId());
+        assertEquals(building, created.getId());
     }
 
     @Test(expected = EntityNotFoundException.class)

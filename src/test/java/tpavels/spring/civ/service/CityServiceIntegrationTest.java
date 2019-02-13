@@ -48,7 +48,7 @@ public class CityServiceIntegrationTest {
         assertEquals(testCity.getName(),created.getName());
         assertEquals(testCity.getLocation(), created.getLocation());
         assertEquals(testCity.getBuildings(),created.getBuildings());
-        assertEquals(city, created.getCityId());
+        assertEquals(city, created.getId());
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -68,9 +68,8 @@ public class CityServiceIntegrationTest {
 
         City city = new City();
         city.setName("test");
-        city.setIsCapital(true);
+        city.setCapital(true);
         city.setLocation(location);
-        city.setBuildings(null);
         return city;
     }
 

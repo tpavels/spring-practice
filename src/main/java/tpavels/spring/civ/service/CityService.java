@@ -36,13 +36,9 @@ public class CityService {
     }
 
     public City getCity(Long id) {
-        City city = cityRepository.findById(id).orElse(null);
-        if (city != null) {
-            city.setCityId(city.getId());
-        } else {
-            throw new EntityNotFoundException(String.format("City {%s} does not exist",id));
-        }
-        return city;
+       return cityRepository
+               .findById(id)
+               .orElseThrow(EntityNotFoundException::new);
     }
 
     public City getCity(String name) {

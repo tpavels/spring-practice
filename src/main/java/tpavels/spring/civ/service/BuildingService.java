@@ -17,6 +17,7 @@ public class BuildingService {
     private BuildingRepository buildingRepository;
 
     public Long createBuilding(Building b) {
+        b.setId(null);
         b = buildingRepository.save(b);
         return b.getId();
     }
@@ -36,13 +37,9 @@ public class BuildingService {
     }
 
     public Building getBuilding(Long id) {
-        Building building = buildingRepository.findById(id).orElse(null);
-        if (building != null) {
-            building.setBuildingId(building.getId());
-        } else {
-            throw new EntityNotFoundException(String.format("Building {%s} does not exist",id));
-        }
-        return building;
+        return buildingRepository
+                .findById(id)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     public List<Building> fetchAllBuildings(){
@@ -52,7 +49,7 @@ public class BuildingService {
     }
 
     private void processBuildings(Building b, List<Building> allBuildings) {
-        b.setBuildingId(b.getId());
+        b.setId(b.getId());
         allBuildings.add(b);
     }
 }

@@ -45,8 +45,8 @@ public class UnitServiceIntegrationTest {
         Unit created = unitService.getUnit(unit);
         assertEquals(testUnit.getName(),created.getName());
         assertEquals(testUnit.getMaintenanceCost(), created.getMaintenanceCost());
-        assertEquals(testUnit.getCategory(),created.getCategory());
-        assertEquals(unit, created.getUnitId());
+        assertEquals(testUnit.getCategory(), created.getCategory());
+        assertEquals(unit, created.getId());
     }
 
     @Test(expected = EntityNotFoundException.class)

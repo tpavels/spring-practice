@@ -13,6 +13,7 @@ import tpavels.spring.civ.repository.UnitRepository;
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -36,29 +37,29 @@ public class SampleDataLoader implements ApplicationRunner {
     private void loadCivs() {
         saveCiv("American", "Teddy Roosevelt", 123L,
                 createCities(Arrays.asList("Washington", "New York", "Philadelphia", "Boston")),
-                Arrays.asList(createCivUnit("Warrior", new Location(4L, 4L), 100L, 1L ),
-                        createCivUnit("Warrior", new Location(4L, 4L), 100L, 2L ),
-                        createCivUnit("Scout", new Location(12L, 7L), 100L, 2L ),
-                        createCivUnit("Archer", new Location(12L, 7L), 100L, 3L )));
+                Arrays.asList(createCivUnit("Warrior", new Location(4L, 4L), 100, 1 ),
+                        createCivUnit("Warrior", new Location(4L, 4L), 100, 2 ),
+                        createCivUnit("Scout", new Location(12L, 7L), 100, 2 ),
+                        createCivUnit("Archer", new Location(12L, 7L), 100, 3 )));
 
         saveCiv("Egyptian", "Cleopatra", 222L,
                 createCities(Arrays.asList("Alexandria", "Thebes", "Memphis")),
-                Arrays.asList(createCivUnit("Galley", new Location(27L, 2L), 100L, 1L ),
-                        createCivUnit("Archer", new Location(27L, 2L), 100L, 1L ),
-                        createCivUnit("Archer", new Location(35L, 4L), 100L, 1L )));
+                Arrays.asList(createCivUnit("Galley", new Location(27L, 2L), 100, 1 ),
+                        createCivUnit("Archer", new Location(27L, 2L), 100, 1 ),
+                        createCivUnit("Archer", new Location(35L, 4L), 100, 1 )));
 
         saveCiv("English", "Victoria", 455L,
                 createCities(Arrays.asList("London", "Liverpool", "Manchester")),
                 Arrays.asList(createCivUnit("Trader", new Location(10L, 16L), null, null ),
                         createCivUnit("Trader", new Location(18L, 20L), null, null ),
-                        createCivUnit("Slinger", new Location(18L, 20L), 100L, 2L ),
-                        createCivUnit("Spearman", new Location(18L, 20L), 100L, 3L ),
-                        createCivUnit("Spearman", new Location(18L, 20L), 100L, 1L )));
+                        createCivUnit("Slinger", new Location(18L, 20L), 100, 2 ),
+                        createCivUnit("Spearman", new Location(18L, 20L), 100, 3 ),
+                        createCivUnit("Spearman", new Location(18L, 20L), 100, 1 )));
 
         saveCiv("Indian", "Gandhi", 600L,
                 createCities(Arrays.asList("Delhi", "Mumbai")),
-                Arrays.asList(createCivUnit("Warrior", new Location(36L, 20L), 100L, 1L ),
-                        createCivUnit("Battering Ram", new Location(36L, 20L), 100L, 2L ),
+                Arrays.asList(createCivUnit("Warrior", new Location(36L, 20L), 100, 1 ),
+                        createCivUnit("Battering Ram", new Location(36L, 20L), 100, 2 ),
                         createCivUnit("Builder", new Location(32L, 15L), null, null ),
                         createCivUnit("Settler", new Location(32L, 15L), null, null )));
     }
@@ -118,7 +119,7 @@ public class SampleDataLoader implements ApplicationRunner {
         saveBuilding("Great Library",0, true);
     }
 
-    private void saveCiv(String name, String leader, Long gold, List<City> cities, List<CivUnits> units) {
+    private void saveCiv(String name, String leader, Long gold, List<City> cities, List<CivUnit> units) {
         Civilization civilization = new Civilization();
         civilization.setGold(gold);
         civilization.setLeader(leader);
@@ -129,43 +130,43 @@ public class SampleDataLoader implements ApplicationRunner {
     }
 
     private void saveBuilding(String name, Integer maintCost, Boolean isWorldWonder) {
-        buildingRepository.save(Building.builder()
-                .name(name)
-                .maintenanceCost(maintCost)
-                .isWorldWonder(isWorldWonder)
-                .build());
+        Building building = new Building();
+        building.setName(name);
+        building.setMaintenanceCost(maintCost);
+        building.setWorldWonder(isWorldWonder);
+        buildingRepository.save(building);
     }
 
     private void saveUnit(String name, Integer maintCost, String cat) {
-        unitRepository.save(Unit.builder()
-                .name(name)
-                .maintenanceCost(maintCost)
-                .category(new UnitCategory(cat))
-                .build());
+        Unit unit = new Unit();
+        unit.setMaintenanceCost(maintCost);
+        unit.setName(name);
+        unit.setCategory(new UnitCategory(cat));
+        unitRepository.save(unit);
     }
 
-    private void saveCity(String name, Boolean isCapital, Location loc, List<Building> buildings) {
-        cityRepository.save(City.builder()
-                .name(name)
-                .buildings(buildings)
-                .location(loc)
-                .isCapital(isCapital)
-                .build());
+    private void saveCity(String name, Boolean isCapital, Location loc, Set<Building> buildings) {
+        City city = new City();
+        city.setName(name);
+        city.setLocation(loc);
+        city.setCapital(isCapital);
+        city.addAllBuilding(buildings);
+        cityRepository.save(city);
     }
 
-    private CivUnits createCivUnit(String unitName, Location loc, Long health, Long rank) {
-        return CivUnits.builder()
-                .unit(unitRepository.getByName(unitName))
-                .location(loc)
-                .rank(rank)
-                .health(health)
-                .build();
+    private CivUnit createCivUnit(String unitName, Location loc, Integer health, Integer rank) {
+        CivUnit civUnit = new CivUnit();
+        civUnit.setLocation(loc);
+        civUnit.setHealth(health);
+        civUnit.setRank(rank);
+        civUnit.setUnit(unitRepository.getByName(unitName));
+        return civUnit;
     }
 
-    private List<Building> createBuildings(List<String> names) {
+    private Set<Building> createBuildings(List<String> names) {
         return names.stream()
                 .map(n -> buildingRepository.getByName(n))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     private List<City> createCities(List<String> names) {

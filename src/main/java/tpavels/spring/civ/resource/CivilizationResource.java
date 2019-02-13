@@ -42,7 +42,7 @@ public class CivilizationResource {
 
     @PutMapping
     public ResponseEntity<Civilization> updateCities(@RequestBody Civilization updated) {
-        Civilization existing = civilizationService.getCivilization(updated.getCivilizationId());
+        Civilization existing = civilizationService.getCivilization(updated.getId());
         Civilization c = civilizationService.updateCivilization(existing, updated);
         return new ResponseEntity<>(c, HttpStatus.OK);
     }
