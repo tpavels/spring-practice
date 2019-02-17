@@ -2,6 +2,7 @@ package tpavels.spring.civ.model;
 
 
 import lombok.*;
+import tpavels.spring.civ.converters.LocationConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -18,7 +19,7 @@ public class CivUnit extends BaseModel {
     @NotNull(message = "Unit cannot be null")
     private Unit unit;
 
-    @OneToOne(mappedBy = "civUnit", cascade = CascadeType.PERSIST)
+    @Convert(converter = LocationConverter.class)
     @NotNull(message = "Location cannot be null")
     private Location location;
 

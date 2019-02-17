@@ -11,16 +11,10 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = "units")
+@EqualsAndHashCode(callSuper = true)
 public class UnitCategory extends BaseModel {
 
     private String name;
-
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            mappedBy = "category"
-    )
-    private final List<Unit> units = new ArrayList<>();
 
     public UnitCategory(@NotNull String name) {
         this.name = name;
@@ -30,7 +24,4 @@ public class UnitCategory extends BaseModel {
         return name;
     }
 
-    public List<Unit> getUnits() {
-        return units;
-    }
 }

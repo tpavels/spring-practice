@@ -27,7 +27,7 @@ public class SampleDataLoader implements ApplicationRunner {
     private CivilizationRepository civilizationRepository;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         loadBuildings();
         loadUnits();
         loadCities();
@@ -126,6 +126,8 @@ public class SampleDataLoader implements ApplicationRunner {
         civilization.setName(name);
         civilization.getCities().addAll(cities);
         civilization.getUnits().addAll(units);
+        cities.forEach(c -> c.setCivilization(civilization));
+        units.forEach(u -> u.setCivilization(civilization));
         civilizationRepository.save(civilization);
     }
 
