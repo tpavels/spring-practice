@@ -1,5 +1,6 @@
 package tpavels.spring.civ.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
@@ -35,7 +36,8 @@ public class City extends BaseModel {
     )
     private final Set<Building> buildings = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "civilization_id")
     private Civilization civilization;
 

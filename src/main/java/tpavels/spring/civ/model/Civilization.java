@@ -23,10 +23,10 @@ public class Civilization extends BaseModel {
     private Long gold;
 
     @OneToMany(
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            cascade = CascadeType.ALL,
             mappedBy = "civilization"
     )
-        private final List<City> cities = new ArrayList<>();
+    private final List<City> cities = new ArrayList<>();
 
     @OneToMany(
             cascade = CascadeType.ALL,

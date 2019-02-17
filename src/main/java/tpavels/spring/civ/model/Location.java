@@ -1,5 +1,6 @@
 package tpavels.spring.civ.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -18,10 +19,12 @@ public class Location extends BaseModel {
     @NotNull(message = "y cannot be null")
     private Long y;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "civ_unit_id", referencedColumnName = "id")
     private CivUnit civUnit;

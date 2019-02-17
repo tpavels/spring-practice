@@ -1,5 +1,6 @@
 package tpavels.spring.civ.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,12 +20,6 @@ public class Unit extends BaseModel {
     @Min(value = 0, message = "Health should not be less than 0")
     private Integer maintenanceCost;
 
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            mappedBy = "unit"
-    )
-    private final List<CivUnit> civUnit = new ArrayList<>();
-
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "unit_category_id")
     @NotNull(message = "Category cannot be null")
@@ -36,10 +31,6 @@ public class Unit extends BaseModel {
 
     public Integer getMaintenanceCost() {
         return maintenanceCost;
-    }
-
-    public List<CivUnit> getCivUnit() {
-        return civUnit;
     }
 
     public UnitCategory getCategory() {
@@ -56,9 +47,5 @@ public class Unit extends BaseModel {
 
     public void setMaintenanceCost(Integer maintenanceCost) {
         this.maintenanceCost = maintenanceCost;
-    }
-
-    public void addCivUnit(CivUnit civUnit) {
-        this.civUnit.add(civUnit);
     }
 }

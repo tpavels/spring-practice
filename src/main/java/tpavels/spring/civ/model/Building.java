@@ -1,5 +1,6 @@
 package tpavels.spring.civ.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -24,9 +25,6 @@ public class Building extends BaseModel{
 
     private Boolean isWorldWonder;
 
-    @ManyToMany(mappedBy = "buildings")
-    private final Set<City> cities = new HashSet<>();
-
     public String getName() {
         return name;
     }
@@ -39,10 +37,6 @@ public class Building extends BaseModel{
         return isWorldWonder;
     }
 
-    public Set<City> getCities() {
-        return cities;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -53,9 +47,5 @@ public class Building extends BaseModel{
 
     public void setWorldWonder(Boolean worldWonder) {
         isWorldWonder = worldWonder;
-    }
-
-    public void addCity(City city) {
-        this.cities.add(city);
     }
 }
